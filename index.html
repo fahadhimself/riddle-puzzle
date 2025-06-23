@@ -46,7 +46,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        #countdown {
+        #countdown-display { /* Renamed from #countdown for consistency and clarity */
             font-size: 1.2em;
             color: #666;
             margin-bottom: 20px;
@@ -54,10 +54,10 @@
     </style>
 </head>
 <body>
+
     <div id="puzzle-area">
         <h1>Solve This Riddle!</h1>
-        <p id="countdown">Time remaining: --:--</p>
-        <p id="riddle-text">
+        <p id="countdown-display">Time remaining: --:--</p> <p id="riddle-text">
             I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?
         </p>
 
@@ -76,7 +76,7 @@
 
         const puzzleArea = document.getElementById('puzzle-area');
         const thankYouMessage = document.getElementById('thank-you-message');
-        const countdownDisplay = document.getElementById('countdown');
+        const countdownDisplay = document.getElementById('countdown-display'); // Referencing the new ID
 
         let timerStarted = Date.now();
         let intervalId;
@@ -91,10 +91,15 @@
                 return;
             }
 
-            const minutes = Math.floor(timeLeftMs / (1000 * 60));
-            const seconds = Math.floor((timeLeftMs % (1000 * 60)) / 1000);
+            const totalSecondsRemaining = Math.floor(timeLeftMs / 1000);
+            const minutes = Math.floor(totalSecondsRemaining / 60);
+            let seconds = totalSecondsRemaining % 60;
 
-            countdownDisplay.textContent = `Time remaining: <span class="math-inline">\{minutes\}\:</span>{seconds < 10 ? '0' : ''}${seconds}`;
+            // Pad with leading zero if seconds is less than 10
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            // Update the text content directly without math-inline class
+            countdownDisplay.textContent = `Time remaining: ${minutes}:${seconds}`;
         }
 
         function endGame() {
@@ -108,5 +113,4 @@
 
     </script>
 </body>
-   
 </html>
