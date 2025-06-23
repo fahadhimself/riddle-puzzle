@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Great Riddle Challenge!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        #puzzle-area {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 700px; /* Limit width for readability */
+            width: 100%;
+            text-align: center;
+        }
+        #riddle-text {
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            color: #333;
+            line-height: 1.6;
+        }
+        iframe {
+            width: 100%;
+            border: none; /* Remove default iframe border */
+        }
+        #thank-you-message {
+            display: none; /* Hidden initially */
+            font-size: 2.5em;
+            color: #28a745; /* Green color for success */
+            text-align: center;
+            padding: 50px;
+            background-color: #e6ffe6;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #countdown {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="puzzle-area">
+        <h1>Solve This Riddle!</h1>
+        <p id="countdown">Time remaining: --:--</p>
+        <p id="riddle-text">
+            I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?
+        </p>
+
+        <iframe src="YOUR_GOOGLE_FORM_EMBED_LINK"
+                height="800" allow="autoplay">Loading your puzzle form...</iframe>
+    </div>
+
+    <div id="thank-you-message">
+        Thank you for participating! The puzzle has now ended.
+    </div>
+
+    <script>
+        // Set the game duration in minutes (e.g., 10 minutes)
+        const GAME_DURATION_MINUTES = 10;
+        const gameDurationMs = GAME_DURATION_MINUTES * 60 * 1000; // Convert to milliseconds
+
+        const puzzleArea = document.getElementById('puzzle-area');
+        const thankYouMessage = document.getElementById('thank-you-message');
+        const countdownDisplay = document.getElementById('countdown');
+
+        let timerStarted = Date.now();
+        let intervalId;
+
+        function updateCountdown() {
+            const elapsedTime = Date.now() - timerStarted;
+            const timeLeftMs = gameDurationMs - elapsedTime;
+
+            if (timeLeftMs <= 0) {
+                clearInterval(intervalId);
+                endGame();
+                return;
+            }
+
+            const minutes = Math.floor(timeLeftMs / (1000 * 60));
+            const seconds = Math.floor((timeLeftMs % (1000 * 60)) / 1000);
+
+            countdownDisplay.textContent = `Time remaining: <span class="math-inline">\{minutes\}\:</span>{seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function endGame() {
+            puzzleArea.style.display = 'none'; // Hide the puzzle content
+            thankYouMessage.style.display = 'block'; // Show the thank you message
+        }
+
+        // Start the countdown timer
+        updateCountdown(); // Call immediately to show initial time
+        intervalId = setInterval(updateCountdown, 1000); // Update every second
+
+    </script>
+</body>
+</html>
